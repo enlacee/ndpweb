@@ -30,7 +30,10 @@
 											<div class="td-meta-info-container">
 												<div class="td-meta-align">
 													<div class="td-big-grid-meta">
-														<!-- <a href="#" class="td-post-category">Cosmopolitan</a> -->
+														{% set cats = fn('get_the_terms', posts[0].id, 'agencia') %}
+														{% for cat in cats %}
+															<a href="#" class="td-post-category">{{cat.name}}</a>
+														{% endfor %}
 														<h3 class="entry-title td-module-title">
 															<a href="{{posts[0].custom['_anews-input-url']}}" rel="nofollow" title="{{posts[0].title}}">
 															{{posts[0].title}}
