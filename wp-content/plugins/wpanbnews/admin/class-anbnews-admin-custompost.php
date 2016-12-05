@@ -417,7 +417,7 @@ class Anbnews_Admin_CustomPost {
 				$i_guid = current($item['child'])['guid'][0]['data'];
 				if (array_search($i_guid, $idsRegistered) === false) {
 
-					$i_title = current($item['child'])['title'][0]['data'];
+					$i_title = html_entity_decode(current($item['child'])['title'][0]['data'], ENT_QUOTES, "UTF-8");
 					$i_link = $this->_getLink(current($item['child'])['link'][0]['data']);
 					$i_category = current($item['child'])['category'][0]['data'];
 					$i_pubDate = current($item['child'])['pubDate'][0]['data'];
@@ -461,10 +461,11 @@ class Anbnews_Admin_CustomPost {
 							wp_set_object_terms($post_id, $cat_ids2, self::$taxonomyAgency, false);
 							// wp_set_object_terms($post_id, array("tag01", "tag02"), self::$taxonomyNewTag, false);
 							// agregar metadatos
+							$stringToUTF8 = html_entity_decode($readOG['description'], ENT_QUOTES, "UTF-8");
 							add_post_meta($post_id, self::$prefixMeta .'input-guid', $i_guid, true);
 							add_post_meta($post_id, self::$prefixMeta .'input-url', $i_link);
 							add_post_meta($post_id, self::$prefixMeta .'input-image-url', $readOG['img']);
-							add_post_meta($post_id, self::$prefixMeta .'input-description', $readOG['description']);
+							add_post_meta($post_id, self::$prefixMeta .'input-description', $stringToUTF8);
 							add_post_meta($post_id, self::$prefixMeta .'input-pub-date', $i_pubDate);
 
 						} else {
