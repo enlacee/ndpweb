@@ -45,6 +45,13 @@ class StarterSite extends TimberSite {
 			'taxonomyNewTag' => 'category-new-tag',//Anbnews_Admin_CustomPost::taxonomyNewTag,
 			'taxonomyAgency' => 'agencia'//Anbnews_Admin_CustomPost::taxonomyAgency
 		);
+		// post *deportes*
+		$context['postsSport'] = Timber::get_posts(array(
+			'post_type' => 'noticia', //category-new
+			//'category' => 'deportes',
+			'category-new' => 'deportes',
+			'numberposts' => 5
+		));
 
 		return $context;
 	}

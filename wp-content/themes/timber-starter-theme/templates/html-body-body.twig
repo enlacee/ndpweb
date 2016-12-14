@@ -203,127 +203,135 @@
 							</div>
 							<div class="clearfix"></div>
 							<hr>
+
+							{% set postsDeport = postsSport %}
+							{% if postsDeport|length > 0 %}
+								<div class="td_block_wrap td_block_15 td-pb-full-cell td_with_ajax_pagination td-pb-border-top">
+
+									{% set cats = fn('get_the_terms', postsDeport[0].id, appVars['taxonomyNew']) %}
+									{% for cat in cats %}
+										<h4 class="block-title"><span>{{cat.name}}</span></h4>
+									{% endfor %}
+
+									<div id="" class="td_block_inner td-column-2">
+										{% if postsDeport|length >= 2 %}
+											{% set numPost = 2 %}
+											{% set numCol = 2 %}
+											{% set constante =  numPost / numCol|round %}
+											{% set c = 0 %}
+
+											{% for a in c .. constante-1 %}
+												{% set inicio = c*numCol %}
+												{% set fin = (c*numCol) + numCol %}
+												<div class="td-block-row">
+													{% set x = inicio %}
+
+													{% for b in x..fin-1 %}
+														{% set image = '' %}
+														{% if postsDeport[b].custom['_anews-input-image-url'] == false %}
+														{%	set image = imgDefault %}
+														{% else %}
+														{%	set image = postsDeport[b].custom['_anews-input-image-url'] %}
+														{% endif %}
+														{% if loop.first %}
+															<div class="td-block-span6">
+																<div class="td_module_mx1 td_module_wrap td-animation-stack">
+																	<div class="td-block14-border"></div>
+																	<div class="td-module-thumb">
+																		<a href="{{postsDeport[b].custom['_anews-input-url']}}" rel="nofollow"
+																			title="{{postsDeport[b].title}}">
+																			<img width="341" height="220" class="entry-thumb td-animation-stack-type0-2"
+																			src="{{image}}" alt="{{postsDeport[b].title}}"></a>
+																	</div>
+																	<div class="meta-info">
+																		<h3 class="entry-title td-module-title">
+																			<a href="{{postsDeport[b].custom['_anews-input-url']}}" rel="nofollow" title="{{postsDeport[b].title}}">{{postsDeport[b].title}}</a></h3>
+
+																	</div>
+																</div>
+															</div>
+														{% else %}
+															<div class="td-block-span6">
+																<div class="td_module_mx1 td_module_wrap td-animation-stack">
+																	<div class="td-block14-border"></div>
+																	<div class="td-module-thumb">
+																	<a href="{{postsDeport[b].custom['_anews-input-url']}}" rel="nofollow"
+																	title="{{postsDeport[b].title}}">
+																		<img width="341" height="220" class="entry-thumb td-animation-stack-type0-2"
+																		src="{{image}}" alt="{{postsDeport[b].title}}" >
+																	</a>
+																	</div>
+																	<div class="meta-info">
+																		<h3 class="entry-title td-module-title">
+																			<a href="{{postsDeport[b].custom['_anews-input-url']}}" rel="nofollow" title="{{postsDeport[b].title}}">{{postsDeport[b].title}}</a></h3>
+
+																	</div>
+																</div>
+															</div>
+														{% endif %}
+
+													{% endfor %}
+												</div>
+											{% endfor %}
+
+										{% else %}
+
+
+
+										{% endif %}
+
+
+
+
 <!--
-							<div class="td_block_wrap td_block_15 td-pb-full-cell td_with_ajax_pagination td-pb-border-top">
-								<h4 class="block-title"><span>GADGET WORLD</span></h4>
 
-								<div id="" class="td_block_inner td-column-2">
-
-									<div class="td-block-row">
-										<div class="td-block-span6">
-											<div class="td_module_mx1 td_module_wrap td-animation-stack">
-												<div class="td-block14-border"></div>
+										<div class="td-block-row">
+											<div class="td-block-span6">
+												<div class="td_module_mx2 td_module_wrap td-animation-stack">
 													<div class="td-module-thumb">
 														<a href="#" rel="nofollow" title="">
-															<img width="341" height="220" class="entry-thumb td-animation-stack-type0-2" src="" alt=""></a>
+															<img width="80" height="60" class="entry-thumb td-animation-stack-type0-2" src="" alt="" title="">
+														</a>
 													</div>
-											</div>
-										</div>
 
-										<div class="td-block-span6">
-											<div class="td_module_mx1 td_module_wrap td-animation-stack">
-											<div class="td-block14-border"></div>
-											<div class="td-module-thumb">
-											<a href="#" rel="nofollow" title="">
-												<img width="341" height="220" class="entry-thumb td-animation-stack-type0-2"
-												src="" alt="" >
-											</a>
-											</div>
+													<div class="item-details">
+														<h3 class="entry-title td-module-title">
+															<a href="" rel="bookmark" title="">Official: </a>
+														</h3>
 
-											</div>
-										</div>
-									</div>
-
-									<div class="td-block-row">
-										<div class="td-block-span6">
-											<div class="td_module_mx2 td_module_wrap td-animation-stack">
-												<div class="td-module-thumb">
-													<a href="#" rel="nofollow" title="">
-														<img width="80" height="60" class="entry-thumb td-animation-stack-type0-2" src="" alt="" title="">
-													</a>
+													</div>
 												</div>
+											</div>
 
-												<div class="item-details">
-													<h3 class="entry-title td-module-title">
-														<a href="" rel="bookmark" title="">Official: </a>
-													</h3>
+											<div class="td-block-span6">
+												<div class="td_module_mx2 td_module_wrap td-animation-stack">
+													<div class="td-module-thumb">
+														<a href="td-post-official-sony-vr-headset-project-morpheus-revealed/index.html" rel="bookmark" title="">
+															<img width="80" height="60" class="entry-thumb td-animation-stack-type0-2"
+														src="" alt="">
+														</a>
+													</div>
 
+													<div class="item-details">
+														<h3 class="entry-title td-module-title">
+															<a href="#" rel="bookmark" title="">Official: </a>
+														</h3>
+													</div>
 												</div>
 											</div>
 										</div>
+-->
 
-										<div class="td-block-span6">
-											<div class="td_module_mx2 td_module_wrap td-animation-stack">
-												<div class="td-module-thumb">
-													<a href="td-post-official-sony-vr-headset-project-morpheus-revealed/index.html" rel="bookmark" title="">
-														<img width="80" height="60" class="entry-thumb td-animation-stack-type0-2"
-													src="" alt="">
-													</a>
-												</div>
 
-												<div class="item-details">
-													<h3 class="entry-title td-module-title">
-														<a href="#" rel="bookmark" title="">Official: </a>
-													</h3>
-												</div>
-											</div>
-										</div>
-									</div>
 
-									<div class="td-block-row">
-										<div class="td-block-span6">
-											<div class="td_module_mx2 td_module_wrap td-animation-stack">
-												<div class="td-module-thumb">
-													<a href="#" rel="bookmark" title="">
-													<img width="80" height="60" class="entry-thumb td-animation-stack-type0-2" src="wp-content/uploads/2014/08/25-1-80x60.jpg" alt="" title="Highway Surveillance Reporting with a Dedicated App"></a>
-												</div>
-												<div class="item-details">
-													<h3 class="entry-title td-module-title"><a href="#" rel="bookmark" title="Highway Surveillance Reporting with a Dedicated App">Highway Surveillance Reporting with a Dedicated App</a>
-													</h3>
-												</div>
-											</div>
-										</div>
 
-										<div class="td-block-span6">
-											<div class="td_module_mx2 td_module_wrap td-animation-stack">
-												<div class="td-module-thumb"><a href="" rel="bookmark" title="Server and Network Technologies Introduced in Winfield"><img width="80" height="60" class="entry-thumb td-animation-stack-type0-2" src="" alt="" title=""></a></div>
-												<div class="item-details">
-													<h3 class="entry-title td-module-title">
-													<a href="#" rel="nofollow" title="">Server</a></h3>
-												</div>
-											</div>
-										</div>
-
-									</div>
-
-									<div class="td-block-row">
-										<div class="td-block-span6">
-											<div class="td_module_mx2 td_module_wrap td-animation-stack">
-												<div class="td-module-thumb">
-													<a href="#" rel="nofollow" title="">
-													<img width="80" height="60" class="entry-thumb td-animation-stack-type0-2" src="" alt="" title=""></a>
-												</div>
-
-												<div class="item-details">
-													<h3 class="entry-title td-module-title"><a href="#" rel="bookmark" title="">Dogs Can Be Monitored with Hi Tech Programmable Collar</a></h3>
-												</div>
-											</div>
-										</div>
-
-										<div class="td-block-span6">
-											<div class="td_module_mx2 td_module_wrap td-animation-stack">
-												<div class="td-module-thumb"><a href="" rel="bookmark" title=""><img width="80" height="60" class="entry-thumb td-animation-stack-type0-2" src="" alt="" title=""></a></div>
-
-												<div class="item-details">
-												<h3 class="entry-title td-module-title">
-													<a href="#" rel="bookmark" title="">Many Students Introduced to New Online Education Program</a></h3>
-												</div>
-											</div>
-										</div>
 									</div>
 								</div>
-							</div>
--->
+
+
+							{% endif %}
+
+
 						</div><!--wpb_wrapper-->
 					</div>
 				</div>
