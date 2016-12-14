@@ -1,5 +1,5 @@
 {% block html_head_container %}
-{% include 'html-header.twig' %}
+	{% include 'html-header.twig' %}
 	{% block head %}{% endblock %}
 	</head>
 {% endblock %}
@@ -34,11 +34,10 @@
 
 		<div id="td-outer-wrap">
 			<div class="td-outer-container">
-			{% include 'html-body-head.twig' %}
-			<!-- midle -->
-			{% include 'html-body-body.twig' %}
+				{% include 'html-body-head.twig' %}
+				<!-- midle -->
+				{% block content %}{# include 'html-body-body.twig' #}{% endblock %}
 			</div>
 		</div>
-
 	</body>
 </html>

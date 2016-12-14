@@ -3,7 +3,7 @@
 			<div class="td-top-bar-container top-bar-style-1">
 				<div class=td-header-sp-top-menu>
 					<div class=td_data_time>
-						<div>
+						<div style="font-weight:normal">
 							{{ fn('get_the_date', 'l j') }} de {{fn('get_the_date', 'F') }} del {{ fn('get_the_date', 'Y') }}
 						</div>
 					</div>
@@ -26,9 +26,10 @@
 						</a>
 					</div>
 					<div class="td-main-menu-logo td-logo-in-header">
-						<a class="td-mobile-logo td-sticky-mobile" href="{{bloginfo('url')}}">
-							<!--<img src="{{bloginfo('template_directory')}}/static/images/logo.png" alt=""/>-->&nbsp;NOTICIAS DEL PERÚ&nbsp;
-						</a>
+						<h1 style="padding: 0;margin: 0;font-size: 16px;margin-left: 0.2em;">
+							<a class="td-mobile-logo td-sticky-mobile" href="{{bloginfo('url')}}">
+							NOTICIAS DEL PERÚ</a>
+						<h1>
 						<a class="td-header-logo td-sticky-mobile" href="{{bloginfo('url')}}">
 							<!--<img src="{{bloginfo('template_directory')}}/static/images/logo.png" alt=""/>-->&nbsp;NOTICIAS DEL PERÚ&nbsp;
 						</a>

@@ -284,6 +284,9 @@ class Anbnews_Admin_CustomPost {
 
 	}
 
+	/**
+	* Ejecutar cron a mano
+	*/
 	static function display_add_news()
 	{
 		do_action('anbnews_cron_read_feed');
@@ -391,16 +394,25 @@ class Anbnews_Admin_CustomPost {
 	*/
 	public function cron_read_feed()
 	{
-		$feed  = fetch_feed('https://news.google.com.pe/news?cf=all&hl=es&pz=1&ned=es_pe&output=rss&num=15');
+		// lista de feeds
+		$feeds = array(
+			'ultimas-noticias' => 'https://news.google.com.pe/news?cf=all&hl=es&pz=1&ned=es_pe&output=rss&num=10',
+			'deportes' => 'https://news.google.com.pe/news?cf=all&hl=es&pz=1&ned=es_pe&topic=s&output=rss&num=10',
+			'economia' => 'https://news.google.com.pe/news?cf=all&hl=es&pz=1&ned=es_pe&topic=b&output=rss&num=10'
+		);
+
+		foreach ($feeds as $key => $value) {
+			$this->_read_feed($value);
+		}
+	}
+
+	/*
+	* Read Feeds
+	*/
+	private function _read_feed($linkFeed)
+	{
+		$feed  = fetch_feed($linkFeed);
 		$items = $feed->get_items();
-		// echo $feed->get_language();
-		// echo "<br>";
-		// echo $feed->subscribe_url();
-		// echo "<br>";
-		// echo $feed->get_title();
-		// echo "<br>";
-		// echo $feed->get_category();
-		// echo "<br>";
 
 		if (isset($items[0]) && get_class($items[0]) == 'SimplePie_Item') {
 			$transport = $items[0]->feed->data['child'];
@@ -417,14 +429,22 @@ class Anbnews_Admin_CustomPost {
 				$i_guid = current($item['child'])['guid'][0]['data'];
 				if (array_search($i_guid, $idsRegistered) === false) {
 
-					$i_title = current($item['child'])['title'][0]['data'];
+					$i_title = html_entity_decode(current($item['child'])['title'][0]['data'], ENT_QUOTES, "UTF-8");
 					$i_link = $this->_getLink(current($item['child'])['link'][0]['data']);
 					$i_category = current($item['child'])['category'][0]['data'];
 					$i_pubDate = current($item['child'])['pubDate'][0]['data'];
 					$i_description = current($item['child'])['pubDate'][0]['data'];
 
 					// read HTML
-					$readOG = $this->_getOpenGraph($i_link);
+					$graph = OpenGraph::fetch($i_link);
+					$readOG = false;
+					if ($graph !== false && !empty($graph->image)) {
+						$readOG = array(
+							'img' => $graph->image,
+							'description' => $graph->description,
+						);
+					}
+
 					if (is_array($readOG) && count($readOG) > 0 && $readOG !== false) {
 						// registrar en la tabla cron *principal*
 						$tableCron = Anbnews_Admin_Table::getInstance();
@@ -461,10 +481,11 @@ class Anbnews_Admin_CustomPost {
 							wp_set_object_terms($post_id, $cat_ids2, self::$taxonomyAgency, false);
 							// wp_set_object_terms($post_id, array("tag01", "tag02"), self::$taxonomyNewTag, false);
 							// agregar metadatos
+							$stringToUTF8 = html_entity_decode($readOG['description'], ENT_QUOTES, "UTF-8");
 							add_post_meta($post_id, self::$prefixMeta .'input-guid', $i_guid, true);
 							add_post_meta($post_id, self::$prefixMeta .'input-url', $i_link);
 							add_post_meta($post_id, self::$prefixMeta .'input-image-url', $readOG['img']);
-							add_post_meta($post_id, self::$prefixMeta .'input-description', $readOG['description']);
+							add_post_meta($post_id, self::$prefixMeta .'input-description', $stringToUTF8);
 							add_post_meta($post_id, self::$prefixMeta .'input-pub-date', $i_pubDate);
 
 						} else {
@@ -567,65 +588,17 @@ class Anbnews_Admin_CustomPost {
 	}
 
 	/**
-	* Obtener HTML Y obtener OpenGraph metas
-	*
-	* @return Boolean|Array
-	*/
-	private function _getOpenGraph($url)
-	{
-		$rs = false;
-		$html = false;
-		$ctx = stream_context_create(array(
-			'http' => array(
-				'method' => "GET",
-				'timeout' => 5
-				)
-			)
-		);
-
-		try {
-			$html = @file_get_contents($url, 0, $ctx);
-		} catch (Exception $e) { // echo $e->getMessage();
-			$html = false;
-		}
-
-		if ($html !== false) {
-			/* get page's description */
-			$re ="<meta\s+property=['\"]??og:image['\"]??\s+content=['\"]??(.+)['\"]??\s*\/?>";
-			preg_match("/$re/siU", $html, $matches);
-			$img = isset($matches[1]) ? $matches[1] : false;
-
-			if ($img == false) {
-				$re ="<link\s+href=['\"]??(.+)['\"]??\s+rel=['\"]??image_src['\"]??\s*\/?>";
-				preg_match("/$re/siU", $html, $matches);
-				$img = isset($matches[1]) ? $matches[1] : false;
-			}
-
-			$re="<meta\s+name=['\"]??description['\"]??\s+content=['\"]??(.+)['\"]??\s*\/?>";
-			preg_match("/$re/siU", $html, $matches);
-			$desc = isset($matches[1]) ? $matches[1] : false;
-
-			$rs = array(
-				"img" => $img,
-				"description" => $desc,
-			);
-		}
-
-		return $rs;
-	}
-
-	/**
 	* Establecer el cache a 1hora
 	*/
 	public function my_cache_filter_handler($seconds)
 	{
 		$currentSeconds = $seconds;
-/*		if (getenv('APP_ENV') == 'development') {
+		if (getenv('APP_ENV') == 'development') {
 			$currentSeconds = 30;
 		} else {
 			$currentSeconds = 60*60;
 		}
-*/
+
 		return $currentSeconds;
 	}
 }

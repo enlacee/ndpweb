@@ -36,11 +36,23 @@ class StarterSite extends TimberSite {
 	}
 
 	function add_to_context( $context ) {
-		$context['foo'] = 'bar';
-		$context['stuff'] = 'I am a value set in your functions.php file';
-		$context['notes'] = 'These values are available everytime you call Timber::get_context();';
 		$context['menu'] = new TimberMenu();
 		$context['site'] = $this;
+		$context['thumbnailDefault'] = get_template_directory_uri() . '/static/images/thumbnail.178x150.jpg';
+		// vars
+		$context['appVars'] = array(
+			'taxonomyNew' => 'category-new',//Anbnews_Admin_CustomPost::taxonomyNew,
+			'taxonomyNewTag' => 'category-new-tag',//Anbnews_Admin_CustomPost::taxonomyNewTag,
+			'taxonomyAgency' => 'agencia'//Anbnews_Admin_CustomPost::taxonomyAgency
+		);
+		// post *deportes*
+		$context['postsSport'] = Timber::get_posts(array(
+			'post_type' => 'noticia', //category-new
+			//'category' => 'deportes',
+			'category-new' => 'deportes',
+			'numberposts' => 5
+		));
+
 		return $context;
 	}
 
