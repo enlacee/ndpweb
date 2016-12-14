@@ -593,12 +593,12 @@ class Anbnews_Admin_CustomPost {
 	public function my_cache_filter_handler($seconds)
 	{
 		$currentSeconds = $seconds;
-/*		if (getenv('APP_ENV') == 'development') {
+		if (getenv('APP_ENV') == 'development') {
 			$currentSeconds = 30;
 		} else {
 			$currentSeconds = 60*60;
 		}
-*/
+
 		return $currentSeconds;
 	}
 }
