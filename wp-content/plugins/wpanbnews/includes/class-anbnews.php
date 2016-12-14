@@ -132,6 +132,11 @@ class Anbnews {
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-anbnews-i18n.php';
 
 		/**
+		* load library
+		*/
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'library/opengraph/OpenGraph.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-anbnews-admin.php';

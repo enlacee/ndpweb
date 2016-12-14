@@ -284,6 +284,9 @@ class Anbnews_Admin_CustomPost {
 
 	}
 
+	/**
+	* Ejecutar cron a mano
+	*/
 	static function display_add_news()
 	{
 		do_action('anbnews_cron_read_feed');
@@ -391,16 +394,25 @@ class Anbnews_Admin_CustomPost {
 	*/
 	public function cron_read_feed()
 	{
-		$feed  = fetch_feed('https://news.google.com.pe/news?cf=all&hl=es&pz=1&ned=es_pe&output=rss&num=15');
+		// lista de feeds
+		$feeds = array(
+			'ultimas-noticias' => 'https://news.google.com.pe/news?cf=all&hl=es&pz=1&ned=es_pe&output=rss&num=10',
+			'deportes' => 'https://news.google.com.pe/news?cf=all&hl=es&pz=1&ned=es_pe&topic=s&output=rss&num=10',
+			'economia' => 'https://news.google.com.pe/news?cf=all&hl=es&pz=1&ned=es_pe&topic=b&output=rss&num=10'
+		);
+
+		foreach ($feeds as $key => $value) {
+			$this->_read_feed($value);
+		}
+	}
+
+	/*
+	* Read Feeds
+	*/
+	private function _read_feed($linkFeed)
+	{
+		$feed  = fetch_feed($linkFeed);
 		$items = $feed->get_items();
-		// echo $feed->get_language();
-		// echo "<br>";
-		// echo $feed->subscribe_url();
-		// echo "<br>";
-		// echo $feed->get_title();
-		// echo "<br>";
-		// echo $feed->get_category();
-		// echo "<br>";
 
 		if (isset($items[0]) && get_class($items[0]) == 'SimplePie_Item') {
 			$transport = $items[0]->feed->data['child'];
@@ -424,7 +436,15 @@ class Anbnews_Admin_CustomPost {
 					$i_description = current($item['child'])['pubDate'][0]['data'];
 
 					// read HTML
-					$readOG = $this->_getOpenGraph($i_link);
+					$graph = OpenGraph::fetch($i_link);
+					$readOG = false;
+					if ($graph !== false && !empty($graph->image)) {
+						$readOG = array(
+							'img' => $graph->image,
+							'description' => $graph->description,
+						);
+					}
+
 					if (is_array($readOG) && count($readOG) > 0 && $readOG !== false) {
 						// registrar en la tabla cron *principal*
 						$tableCron = Anbnews_Admin_Table::getInstance();
@@ -562,54 +582,6 @@ class Anbnews_Admin_CustomPost {
 			} else if ($slug == 'main') {
 				$rs = trim(substr($string, 0, $start));
 			}
-		}
-
-		return $rs;
-	}
-
-	/**
-	* Obtener HTML Y obtener OpenGraph metas
-	*
-	* @return Boolean|Array
-	*/
-	private function _getOpenGraph($url)
-	{
-		$rs = false;
-		$html = false;
-		$ctx = stream_context_create(array(
-			'http' => array(
-				'method' => "GET",
-				'timeout' => 5
-				)
-			)
-		);
-
-		try {
-			$html = @file_get_contents($url, 0, $ctx);
-		} catch (Exception $e) { // echo $e->getMessage();
-			$html = false;
-		}
-
-		if ($html !== false) {
-			/* get page's description */
-			$re ="<meta\s+property=['\"]??og:image['\"]??\s+content=['\"]??(.+)['\"]??\s*\/?>";
-			preg_match("/$re/siU", $html, $matches);
-			$img = isset($matches[1]) ? $matches[1] : false;
-
-			if ($img == false) {
-				$re ="<link\s+href=['\"]??(.+)['\"]??\s+rel=['\"]??image_src['\"]??\s*\/?>";
-				preg_match("/$re/siU", $html, $matches);
-				$img = isset($matches[1]) ? $matches[1] : false;
-			}
-
-			$re="<meta\s+name=['\"]??description['\"]??\s+content=['\"]??(.+)['\"]??\s*\/?>";
-			preg_match("/$re/siU", $html, $matches);
-			$desc = isset($matches[1]) ? $matches[1] : false;
-
-			$rs = array(
-				"img" => $img,
-				"description" => $desc,
-			);
 		}
 
 		return $rs;
