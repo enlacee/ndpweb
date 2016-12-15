@@ -207,80 +207,134 @@
 							{% set postsDeport = postsSport %}
 							{% if postsDeport|length > 0 %}
 								<div class="td_block_wrap td_block_15 td-pb-full-cell td_with_ajax_pagination td-pb-border-top">
-
 									{% set cats = fn('get_the_terms', postsDeport[0].id, appVars['taxonomyNew']) %}
 									{% for cat in cats %}
 										<h4 class="block-title"><span>{{cat.name}}</span></h4>
 									{% endfor %}
 
 									<div id="" class="td_block_inner td-column-2">
-										{% if postsDeport|length >= 2 %}
-											{% set numPost = 2 %}
-											{% set numCol = 2 %}
-											{% set constante =  numPost / numCol|round %}
-											{% set c = 0 %}
+										{# SECCION 1 #}
+										{% set numPost = 2 %}
+										{% set numCol = 2 %}
+										{% set constante =  numPost / numCol|round %}
+										{% set c = 0 %}
 
-											{% for a in c .. constante-1 %}
-												{% set inicio = c*numCol %}
-												{% set fin = (c*numCol) + numCol %}
-												<div class="td-block-row">
-													{% set x = inicio %}
+										{% for a in c .. constante-1 %}
+											{% set inicio = c*numCol %}
+											{% set fin = (c*numCol) + numCol %}
+											<div class="td-block-row">
+												{% set x = inicio %}
 
-													{% for b in x..fin-1 %}
-														{% set image = '' %}
-														{% if postsDeport[b].custom['_anews-input-image-url'] == false %}
-														{%	set image = imgDefault %}
-														{% else %}
-														{%	set image = postsDeport[b].custom['_anews-input-image-url'] %}
-														{% endif %}
-														{% if loop.first %}
-															<div class="td-block-span6">
-																<div class="td_module_mx1 td_module_wrap td-animation-stack">
-																	<div class="td-block14-border"></div>
-																	<div class="td-module-thumb">
-																		<a href="{{postsDeport[b].custom['_anews-input-url']}}" rel="nofollow"
-																			title="{{postsDeport[b].title}}">
-																			<img width="341" height="220" class="entry-thumb td-animation-stack-type0-2"
-																			src="{{image}}" alt="{{postsDeport[b].title}}"></a>
-																	</div>
-																	<div class="meta-info">
-																		<h3 class="entry-title td-module-title">
-																			<a href="{{postsDeport[b].custom['_anews-input-url']}}" rel="nofollow" title="{{postsDeport[b].title}}">{{postsDeport[b].title}}</a></h3>
-
-																	</div>
-																</div>
-															</div>
-														{% else %}
-															<div class="td-block-span6">
-																<div class="td_module_mx1 td_module_wrap td-animation-stack">
-																	<div class="td-block14-border"></div>
-																	<div class="td-module-thumb">
+												{% for b in x..fin-1 %}
+													{% set image = '' %}
+													{% if postsDeport[b].custom['_anews-input-image-url'] == false %}
+													{%	set image = imgDefault %}
+													{% else %}
+													{%	set image = postsDeport[b].custom['_anews-input-image-url'] %}
+													{% endif %}
+													{% if loop.first %}
+														<div class="td-block-span6">
+															<div class="td_module_mx1 td_module_wrap td-animation-stack">
+																<div class="td-block14-border"></div>
+																<div class="td-module-thumb">
 																	<a href="{{postsDeport[b].custom['_anews-input-url']}}" rel="nofollow"
-																	title="{{postsDeport[b].title}}">
+																		title="{{postsDeport[b].title}}">
 																		<img width="341" height="220" class="entry-thumb td-animation-stack-type0-2"
-																		src="{{image}}" alt="{{postsDeport[b].title}}" >
-																	</a>
-																	</div>
-																	<div class="meta-info">
-																		<h3 class="entry-title td-module-title">
-																			<a href="{{postsDeport[b].custom['_anews-input-url']}}" rel="nofollow" title="{{postsDeport[b].title}}">{{postsDeport[b].title}}</a></h3>
+																		src="{{image}}" alt="{{postsDeport[b].title}}"></a>
+																</div>
+																<div class="meta-info">
+																	<h3 class="entry-title td-module-title">
+																		<a href="{{postsDeport[b].custom['_anews-input-url']}}" rel="nofollow" title="{{postsDeport[b].title}}">{{postsDeport[b].title}}</a></h3>
 
-																	</div>
 																</div>
 															</div>
-														{% endif %}
+														</div>
+													{% else %}
+														<div class="td-block-span6">
+															<div class="td_module_mx1 td_module_wrap td-animation-stack">
+																<div class="td-block14-border"></div>
+																<div class="td-module-thumb">
+																<a href="{{postsDeport[b].custom['_anews-input-url']}}" rel="nofollow"
+																title="{{postsDeport[b].title}}">
+																	<img width="341" height="220" class="entry-thumb td-animation-stack-type0-2"
+																	src="{{image}}" alt="{{postsDeport[b].title}}" >
+																</a>
+																</div>
+																<div class="meta-info">
+																	<h3 class="entry-title td-module-title">
+																		<a href="{{postsDeport[b].custom['_anews-input-url']}}" rel="nofollow" title="{{postsDeport[b].title}}">{{postsDeport[b].title}}</a></h3>
 
-													{% endfor %}
+																</div>
+															</div>
+														</div>
+													{% endif %}
+
+												{% endfor %}
+											</div>
+										{% endfor %}
+										{# SECCION 2 #}
+										{#% set partPostDeport = postsDeport|slice(2) %#}
+										{% set posts1 = postsDeport|slice(2,2) %}
+										{% set posts2 = postsDeport|slice(4,2) %}
+
+										{% if posts1|length > 0 %}
+										<div class="td-block-row">
+											{% for  post in posts1 %}
+												{% set imgDefault = thumbnailDefault %}
+												{% set image = '' %}
+												{% if post.custom['_anews-input-image-url'] == false %}
+												{%	set image = imgDefault %}
+												{% else %}
+												{%	set image = post.custom['_anews-input-image-url'] %}
+												{% endif %}
+												<div class="td-block-span6">
+													<div class="td_module_mx2 td_module_wrap td-animation-stack">
+														<div class="td-module-thumb">
+															<a href="{{post.custom['_anews-input-url']}}" rel="nofollow" title="">
+																<img width="80" height="60" class="entry-thumb td-animation-stack-type0-2" src="{{image}}" alt="{{post.title}}">
+															</a>
+														</div>
+
+														<div class="item-details">
+															<h3 class="entry-title td-module-title">
+																<a href="{{post.custom['_anews-input-url']}}" rel="nofollow" title="{{post.title}}">{{post.title}}</a>
+															</h3>
+														</div>
+													</div>
 												</div>
 											{% endfor %}
-
-										{% else %}
-
-
-
+										</div>
 										{% endif %}
 
+										{# CODIGO DUPLICADO #}
+										{% if posts2|length > 0 %}
+										<div class="td-block-row">
+											{% for  post in posts2 %}
+												{% set imgDefault = thumbnailDefault %}
+												{% set image = '' %}
+												{% if post.custom['_anews-input-image-url'] == false %}
+												{%	set image = imgDefault %}
+												{% else %}
+												{%	set image = post.custom['_anews-input-image-url'] %}
+												{% endif %}
+												<div class="td-block-span6">
+													<div class="td_module_mx2 td_module_wrap td-animation-stack">
+														<div class="td-module-thumb">
+															<a href="{{post.custom['_anews-input-url']}}" rel="nofollow" title="">
+																<img width="80" height="60" class="entry-thumb td-animation-stack-type0-2" src="{{image}}" alt="{{post.title}}">
+															</a>
+														</div>
 
+														<div class="item-details">
+															<h3 class="entry-title td-module-title">
+																<a href="{{post.custom['_anews-input-url']}}" rel="nofollow" title="{{post.title}}">{{post.title}}</a>
+															</h3>
+														</div>
+													</div>
+												</div>
+											{% endfor %}
+										</div>
+										{% endif %}
 
 
 <!--
@@ -306,7 +360,7 @@
 											<div class="td-block-span6">
 												<div class="td_module_mx2 td_module_wrap td-animation-stack">
 													<div class="td-module-thumb">
-														<a href="td-post-official-sony-vr-headset-project-morpheus-revealed/index.html" rel="bookmark" title="">
+														<a href="" rel="bookmark" title="">
 															<img width="80" height="60" class="entry-thumb td-animation-stack-type0-2"
 														src="" alt="">
 														</a>
@@ -321,10 +375,6 @@
 											</div>
 										</div>
 -->
-
-
-
-
 									</div>
 								</div>
 
