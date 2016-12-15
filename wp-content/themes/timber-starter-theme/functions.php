@@ -50,7 +50,7 @@ class StarterSite extends TimberSite {
 			'post_type' => 'noticia', //category-new
 			//'category' => 'deportes',
 			'category-new' => 'deportes',
-			'numberposts' => 5
+			'numberposts' => 6
 		));
 
 		return $context;
