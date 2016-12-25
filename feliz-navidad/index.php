@@ -1,5 +1,7 @@
 <?php
 // CREAR ARRAY DE IMAGENES
+// acceder por URL example
+// http://local.ndp.net/feliz-navidad/?r=c4ca4238a0b923820dcc509a6f75849b
 
 /*
 * Generator array key md5
@@ -30,7 +32,7 @@ $images = array(
 if (!empty($_GET['r'])) {
 	if (isset($images[$_GET['r']])) {
 		$imageGif = $images[$_GET['r']];
-		echo '<h1 style="font-size:20px">Ojo esto no es una plantilla, aunque paresca :) FN</h1>';
+		echo '<h1 style="font-size:20px">Ojo esto no es una plantilla, aunque paresca :) #felizNavidad</h1>';
 		echo '<img src="cats/' . $imageGif . '" alt="Felíz Navidad">';
 ?>
 <pre style="font-size: 7px">Ya son las <strong><?php echo date('h:i') ?></strong> a que horas piensas abrír el champan...!!!</pre><?php
