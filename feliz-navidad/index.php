@@ -35,6 +35,6 @@ if (!empty($_GET['r'])) {
 		echo '<h1 style="font-size:20px">Ojo esto no es una plantilla, aunque paresca :) #felizNavidad</h1>';
 		echo '<img src="cats/' . $imageGif . '" alt="Felíz Navidad">';
 ?>
-<pre style="font-size: 7px">Ya son las <strong><?php echo date('h:i') ?></strong> a que horas piensas abrír el champan...!!!</pre><?php
+<pre style="font-size: 7px">Ya son las <strong><?php echo date('h:i') ?></strong> a que hora piensas abrír el champan...!!!</pre><?php
 	}
 }
