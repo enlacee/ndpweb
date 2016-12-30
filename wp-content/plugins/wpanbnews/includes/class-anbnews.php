@@ -212,6 +212,22 @@ class Anbnews {
 		$this->loader->add_action('anbnews_cron_read_feed',$plugin ,'cron_read_feed');
 	}
 
+	public static function activate()
+	{
+		// add cron INSERT noticias
+		if (!wp_next_scheduled('anbnews_cron_read_feed')) {
+			wp_schedule_event(time(), 'hourly', 'anbnews_cron_read_feed');
+		}
+	}
+
+	public static function deactivate()
+	{
+		// remove cron
+		if (wp_next_scheduled('anbnews_cron_read_feed')) {
+			wp_clear_scheduled_hook('anbnews_cron_read_feed');
+		}
+	}
+
 	/**
 	 * Register all of the hooks related to the public-facing functionality
 	 * of the plugin.

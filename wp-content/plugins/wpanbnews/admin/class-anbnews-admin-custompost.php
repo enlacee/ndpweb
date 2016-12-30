@@ -317,11 +317,6 @@ class Anbnews_Admin_CustomPost {
 
 	public static function display_view_cron_settings()
 	{
-		// add cron INSERT noticias
-		if (!wp_next_scheduled('anbnews_cron_read_feed')) {
-			wp_schedule_event(time(), 'hourly', 'anbnews_cron_read_feed');
-		}
-
 		// verify
 		if (!wp_next_scheduled('anbnews_boj_cron_hook')) {
 			// schedule the event to run
