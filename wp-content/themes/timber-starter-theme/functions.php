@@ -46,6 +46,12 @@ class StarterSite extends TimberSite {
 			'taxonomyAgency' => 'agencia'//Anbnews_Admin_CustomPost::taxonomyAgency
 		);
 		// post *deportes*
+		$context['postsEconomy'] = Timber::get_posts(array(
+			'post_type' => 'noticia',
+			'category-new' => 'economia',
+			'numberposts' => 6
+		));
+
 		$context['postsSport'] = Timber::get_posts(array(
 			'post_type' => 'noticia', //category-new
 			//'category' => 'deportes',
