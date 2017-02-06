@@ -7,6 +7,10 @@
 							<div class="td_block_wrap td_block_big_grid td_uid_16_580e30c86017b_rand td-grid-style-1 td-hover-1 td-big-grids td-pb-border-top"
 								data-td-block-uid="td_uid_16_580e30c86017b" style="margin-top:3px">
 
+							<!-- Category Economia-->
+							{% set postsData = postsNews %}
+							{% if postsData|length > 0 %}
+								{% set posts = postsData %}
 								<div id="td_uid_16_580e30c86017b" class="td_block_inner">
 									<div class="td-big-grid-wrapper">
 										{# ITEM 0 #}
@@ -125,7 +129,7 @@
 									</div>
 									<div class="clearfix"></div>
 								</div>
-
+							{% endif %}
 							</div>
 						</div>
 					</div>
@@ -142,6 +146,7 @@
 							<!-- Category Economia-->
 							{% set postsData = postsEconomy %}
 							{% if postsData|length > 0 %}
+								{% set posts = postsData %}
 								<div class="td_block_wrap td_block_1 td_with_ajax_pagination">
 									{% set cats = fn('get_the_terms', postsData[0].id, appVars['taxonomyNew']) %}
 									{% for cat in cats %}
@@ -149,7 +154,7 @@
 									{% endfor %}
 									<div id="" class="td_block_inner">
 										<div class="td-block-row">
-											{% for i in 5..9 %}
+											{% for i in 0..4 %}
 												{% if posts[i] is defined %}
 													{% set imgDefault = thumbnailDefault %}
 													{% set image = '' %}
@@ -160,7 +165,7 @@
 													{% endif %}
 												{% endif %}
 
-												{% if i == 5 %}
+												{% if i == 0 %}
 													<div class="td-block-span6">
 														<div class="td_module_4 td_module_wrap td-animation-stack">
 															<div class="td-module-image">
@@ -181,7 +186,7 @@
 															</h3>
 
 															<div class="td-excerpt">
-															{{ posts[i].custom['_anews-input-description'] }}
+															{{ posts[i].custom['_anews-input-description'][:140] }}
 															</div>
 														</div>
 													</div>
@@ -196,7 +201,9 @@
 															</div>
 															<div class="item-details">
 																<h3 class="entry-title td-module-title">
-																	<a href="{{posts[i].custom['_anews-input-url']}}" rel="nofollow" title="{{posts[i].title}}">{{posts[i].title}}</a></h3>
+																	<a href="{{posts[i].custom['_anews-input-url']}}"
+																	rel="nofollow" title="{{posts[i].title}}">{{posts[i].title}}</a>
+																</h3>
 															</div>
 														</div>
 													</div>
